@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qf.dao.AgricultureProductDao">
+    <resultMap id="agricultureProductResult" type="com.qf.domain.AgricultureProduct">
+        <id property="productId" column="product_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="productScale" column="product_scale"/>
+        <result property="productCompany" column="product_company"/>
+        <result property="productImages" column="product_images"/>
+        <result property="productContent" column="product_content"/>
+        <result property="productComment" column="product_comment"/>
+        <result property="productBrand" column="product_brand"/>
+        <result property="productPlace" column="product_place"/>
+        <result property="productStorage" column="product_storage"/>
+        <result property="productDetailsImages" column="product_details_images"/>
+        <result property="productService" column="product_service"/>
+        <result property="productPrice" column="product_price"/>
+        <result property="productNumber" column="product_number"/>
+<!--        <result column="picture_id" property="prictureId" jdbcType="INTEGER"/>-->
+<!--        <result column="picture_url" property="prictureUrl" jdbcType="VARCHAR"/>-->
+<!--       <collection property="agriculturePictureList" column="product_id" ofType="com.qf.domain.AgricultureProduct"-->
+<!--                   select="com.qf.dao.AgriculturePictureDao.loadPicture"/>-->
+        <collection property="agriculturePictureList" column="product_id" ofType="com.qf.domain.AgricultureProduct"
+                    select="com.qf.dao.AgriculturePictureDao.loadPicture"/>
+    </resultMap>
+    <select id="findByCategoriesId" resultMap="agricultureProductResult">
+        select * from agriculture_product where product_id in
+        (select proid from subclass_product where subid in
+        (select subclass_id from subclass where subclass_id in
+        (select subid from categories_subclass where catid=#{catid})))
+    </select>
+    <select id="selectone" parameterType="java.lang.Integer" resultMap="agricultureProductResult">
+        select * from agriculture_product where product_id=#{id}
+  </select>
+    <select id="findAll" resultMap="agricultureProductResult">
+        select * from agriculture_product
+    </select>
+    <select id="findLike" parameterType="com.qf.domain.AgricultureProduct" resultMap="agricultureProductResult">
+        SELECT * FROM agriculture_product WHERE product_name LIKE concat(concat('%',#{productName}),'%')
+    </select>
+
+    <select id="findAllById" parameterType="com.qf.domain.AgricultureProduct" resultMap="agricultureProductResult">
+        SELECT * from agriculture_product where product_id=#{productId}
+    </select>
+
+
+    <select id="findBySortId" resultMap="agricultureProductResult" >
+        select * from agriculture_product where product_id in
+(select p_id from sort_product where s_id=#{sortId})
+    </select>
+</mapper>
+

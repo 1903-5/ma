@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.dao.UserDao">
+    <resultMap id="userResult" type="com.qf.domain.AgricultureUser">
+        <id property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userSex" column="user_sex"/>
+        <result property="userPassword" column="user_password"/>
+        <result property="userEmail" column="user_email"/>
+        <result property="userMoney" column="user_money"/>
+        <result property="userPicture" column="user_picture"/>
+        <result property="userPayPassword" column="user_paypassword"/>
+    </resultMap>
+
+    <update id="updateUserMoney" parameterType="com.qf.domain.AgricultureUser">
+        update agriculture_user set user_money=#{userMoney} where user_id=#{userId}
+    </update>
+
+    <update id="updatPayPassword" parameterType="com.qf.domain.AgricultureUser">
+        update agriculture_user set user_paypassword=#{userPayPassword} where user_id=#{userId}
+    </update>
+
+    <update id="updatePassword" parameterType="com.qf.domain.AgricultureUser">
+        update agriculture_user set user_password=#{userPassword} where user_id=#{userId}
+    </update>
+
+    <sql id="tbusers_columns">
+    PASSWORD,USERNAME
+</sql>
+    <!--根据用户名查询对象  -->
+    <select id="findUserName" parameterType="string" resultMap="userResult">
+        SELECT
+        <include refid="tbusers_columns"></include>
+        FROM
+        agriculture_user U
+        WHERE
+        U.user_name = #{userName}
+    </select>
+
+</mapper>
