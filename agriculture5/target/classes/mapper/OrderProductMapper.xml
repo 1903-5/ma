@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.dao.OrderProductDao">
+    <resultMap id="orderProductResult" type="com.qf.domain.OrderProduct">
+        <id property="zId" column="id"/>
+        <result property="oId" column="oid"/>
+        <result property="pId" column="pid"/>
+        <result property="number" column="number"/>
+        <result property="price" column="price"/>
+        <result property="monicker" column="monicker"/>
+        <result property="photo" column="photo"/>
+    </resultMap>
+
+    <insert id="saveAll" parameterType="list">
+        insert into order_product values
+        <foreach collection="list" item="p" separator=",">
+            (default,#{p.oId},#{p.pId},#{p.number},#{p.monicker},#{p.photo},#{p.price})
+        </foreach>
+    </insert>
+
+    <select id="findOrderProductByOId" resultMap="orderProductResult" parameterType="string">
+        select * from order_product where oid=#{oId}
+    </select>
+
+    <delete id="deleteOrderProduct" parameterType="string">
+        delete from order_product where oid=#{orderId}
+    </delete>
+</mapper>

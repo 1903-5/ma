@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.dao.Addressdao">
+    <resultMap id="agricultureAddressResult" type="com.qf.domain.Address">
+        <id property="addressId" column="add_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userPhone" column="user_phone"/>
+        <result property="userAddress" column="user_address"/>
+    </resultMap>
+    <select id="findAddressByuserID" resultMap="agricultureAddressResult">
+      SELECT ad.add_id,au.user_id,au.user_name,ad.user_address
+       FROM
+       agriculture_user au,address ad
+       WHERE
+       au.user_id=ad.user_id
+       AND
+        au.`user_id`= #{userId};
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        DELETE FROM address WHERE add_id=#{id}
+    </delete>
+
+    <insert id="insertadd">
+        INSERT INTO address(user_phone,user_address,user_name,user_id)
+        VALUES (#{userPhone},#{userAddress},#{userName},#{userId})
+    </insert>
+
+    <update id="updateAdd">
+        UPDATE address SET user_phone =#{userPhone} ,user_address = #{userAddress}
+        WHERE
+        add_id=#{addId};
+    </update>
+
+
+
+</mapper>

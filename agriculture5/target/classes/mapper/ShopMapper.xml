@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qf.dao.ShopDao">
+    <resultMap id="shopResult" type="com.qf.domain.Shop">
+        <id property="shopId" column="shop_id"/>
+        <result property="shopTitle" column="shop_title"/>
+        <result property="shopImg" column="shop_img"/>
+        <result property="shopNum" column="shop_num"/>
+        <result property="shopPrice" column="shop_price"/>
+    </resultMap>
+<insert id="saveShop" parameterType="com.qf.domain.Shop">
+  insert into shop values (#{shopId},#{shopTitle},#{shopImg},#{shopNum},#{shopPrice});
+</insert>
+
+    <select id="loadByUserIdShowShop" resultMap="shopResult" >
+       select * from shop where shop_id  in (select sid from user_shop where usid=#{userId});
+    </select>
+    <delete id="deleteShop" parameterType="int" >
+        DELETE FROM shop
+        <where>
+            shop_id=#{shopId}
+        </where>
+    </delete>
+    <delete id="deleteShopUser" parameterType="int" >
+        DELETE FROM user_shop
+        <where>
+            sid=#{shopId}
+        </where>
+    </delete>
+
+    <update id="updateShop" parameterType="com.qf.domain.Shop">
+        UPDATE shop SET shop_title=#{shopTitle},shop_img=#{shopImg},shop_num=#{shopNum},shop_price=#{shopPrice}
+        <where>
+            shop_id=#{shopId}
+        </where>
+    </update>
+
+
+    <select id="getMaxShopId" resultType="integer" >
+        select MAX(shop_id) from shop ;
+    </select>
+
+    <select id="findLikeShop" parameterType="com.qf.domain.Shop" resultMap="shopResult">
+        SELECT * FROM shop WHERE shop_title LIKE concat(concat('%',#{productName}),'%')
+    </select>
+
+
+    <select id="loadByShopIdSshowShop" resultMap="shopResult">
+        select *
+        from shop
+        where shop_id in
+        <foreach collection="list" item="shopId" index="index"
+                 open="(" close=")" separator=",">
+            #{shopId}
+        </foreach>
+    </select>
+
+    <select id="loadByProductIdShowShop" resultMap="shopResult" >
+       select * from shop where shop_id in(select sid from shop_product where proid=#{productId});
+    </select>
+
+
+
+</mapper>

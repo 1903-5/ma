@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qf.dao.SubclassDao">
+    <resultMap id="subclassResult" type="com.qf.domain.Subclass">
+        <id property="subclassId" column="subclass_id"/>
+        <result property="subclassName" column="subclass_name"/>
+    </resultMap>
+    <select id="findByCategoriesId" resultMap="subclassResult">
+        select * from subclass where subclass_id in
+        (select subid from categories_subclass where catid=#{catid})
+    </select>
+</mapper>

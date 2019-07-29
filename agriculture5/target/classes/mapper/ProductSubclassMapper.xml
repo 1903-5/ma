@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.dao.AgricultureProductDao">
+    <resultMap id="productSubclassResult" type="com.qf.domain.AgricultureProduct">
+        <id property="productId" column="product_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="productScale" column="product_scale"/>
+        <result property="productCompany" column="product_company"/>
+        <result property="productImages" column="product_images"/>
+        <result property="productContent" column="product_content"/>
+        <result property="productComment" column="product_comment"/>
+        <result property="productBrand" column="product_brand"/>
+        <result property="productPlace" column="product_place"/>
+        <result property="productStorage" column="product_storage"/>
+        <result property="productDetailsImages" column="product_details_images"/>
+        <result property="productService" column="product_service"/>
+        <result property="productPrice" column="product_price"/>
+        <result property="productNumber" column="product_number"/>
+    </resultMap>
+    <select id="findBySubclassId" resultMap="productSubclassResult">
+        select * from agriculture_product where product_id in
+        (select proid from subclass_product where subid=#{subid})
+    </select>
+</mapper>
